@@ -1,0 +1,13 @@
+<div class="container d-flex align-items-center justify-content-center flex-column mt-3">
+  <h2>Login</h2>
+  <%- include('../partials/messages.ejs') -%>
+  <form method="post" class="form-group">
+    <input required type="email" name="email" placeholder="Email" class="form-control mt-3" style="width: 250px;">
+    <input required type="password" name="password" placeholder="Password" class="form-control mt-3"
+      style="width: 250px;">
+    <div class="d-flex align-items-center justify-content-between">
+      <input type="submit" value="Login" class="btn btn-primary mt-3">
+      <a href="/users/register">new user?</a>
+    </div>
+  </form>
+</div>

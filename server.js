@@ -5,10 +5,15 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const expressLayout = require('express-ejs-layouts');
+const passport = require('passport');
 const session = require('express-session');
 const flash = require('express-flash');
 
+const passportLocalStrategy = require('./config/localStrategy');
+passportLocalStrategy(passport);
+
 const indexRoutes = require('./routes/index');
+const usersRoutes = require('./routes/users');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -21,11 +26,10 @@ app.use(
 		secret: process.env.SESSION_SECRECT,
 		resave: false,
 		saveUninitialized: false,
-		cookie: {
-			secure: true,
-		},
 	})
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 
 (async () => {
@@ -41,7 +45,8 @@ app.use(flash());
 	}
 })();
 
-app.get('/', indexRoutes);
+app.use('/', indexRoutes);
+app.use('/users', usersRoutes);
 
 app.listen(process.env.PORT, () =>
 	console.log(`Server started on port ${process.env.PORT}`)
