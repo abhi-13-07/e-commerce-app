@@ -1,0 +1,29 @@
+<%- include('../partials/header.ejs') -%>
+<%- include('../partials/messages.ejs') -%>
+<div class="container mt-3">
+  <h2>Add Product</h2>
+  <form method="post">
+    <input 
+      type="text" 
+      name="name"
+      class="form-control mt-3"
+      placeholder="Product Name" 
+      autocomplete="off"
+      value=<%= typeof(name) !== 'undefined' ? name : '' %> 
+    >
+    <input 
+      type="number"
+      name="price"
+      class="form-control mt-3"
+      placeholder="Product Price"
+      autocomplete="off"
+      value=<%= typeof(price) !== 'undefined' ? price : '' %>
+    >
+    <textarea name="description" cols="30" rows="10" class="form-control mt-3" placeholder="Product Description"><%= typeof(description) !=='undefined' ? description : '' %></textarea>
+    <input type="file" name="image" placeholder="Choose a picture" class="form-control mt-3" />
+    <div class="d-flex align-items-center justifly-content-end gap-3">
+      <input type="submit" value="Add Product" class="btn btn-success mt-3">
+      <a href="/" class="btn btn-warning mt-3">Back</a>
+    </div>
+  </form>
+</div>

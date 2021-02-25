@@ -14,6 +14,7 @@ passportLocalStrategy(passport);
 
 const indexRoutes = require('./routes/index');
 const usersRoutes = require('./routes/users');
+const productsRoutes = require('./routes/products');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -47,6 +48,7 @@ app.use(flash());
 
 app.use('/', indexRoutes);
 app.use('/users', usersRoutes);
+app.use('/products', productsRoutes);
 
 app.listen(process.env.PORT, () =>
 	console.log(`Server started on port ${process.env.PORT}`)

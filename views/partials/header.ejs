@@ -23,6 +23,11 @@
         </li>
       </ul>
       <div>
+        <% if (locals.user && locals.user.role === 'admin') { %>
+          <a class="text-white text-decoration-none me-3" href="/products/add">Add products</a>
+        <% } %>
+      </div>
+      <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cart4 me-4 mb-2 text-white"
           viewBox="0 0 16 16">
           <path
