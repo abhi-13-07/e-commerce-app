@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const restrictAuth = require('../middlewares/restrictAuth');
+const formValidate = require('../middlewares/formValidate');
 
 router.get('/login', restrictAuth, (req, res) => {
 	res.render('users/login');
@@ -24,7 +25,7 @@ router.get('/register', restrictAuth, (req, res) => {
 	res.render('users/register');
 });
 
-router.post('/register', restrictAuth, async (req, res) => {
+router.post('/register', restrictAuth, formValidate, async (req, res) => {
 	const { name, email, password1 } = req.body;
 	const user = new User({
 		name,
