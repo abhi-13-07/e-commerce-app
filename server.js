@@ -8,6 +8,7 @@ const expressLayout = require('express-ejs-layouts');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('express-flash');
+const MongoStore = require('connect-mongo').default;
 
 const passportLocalStrategy = require('./config/localStrategy');
 passportLocalStrategy(passport);
@@ -19,7 +20,7 @@ const productsRoutes = require('./routes/products');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layout');
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use(expressLayout);
 app.use(express.static('public'));
 app.use(
@@ -27,6 +28,7 @@ app.use(
 		secret: process.env.SESSION_SECRECT,
 		resave: false,
 		saveUninitialized: false,
+		store: MongoStore.create({ mongoUrl: process.env.DATABASE_URI }),
 	})
 );
 app.use(passport.initialize());
@@ -46,8 +48,13 @@ app.use(flash());
 	}
 })();
 
+app.use('/', express.static('public'));
 app.use('/', indexRoutes);
+
+app.use('/users', express.static('public'));
 app.use('/users', usersRoutes);
+
+app.use('/products', express.static('public'));
 app.use('/products', productsRoutes);
 
 app.listen(process.env.PORT, () =>
