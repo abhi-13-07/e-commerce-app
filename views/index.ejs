@@ -1,6 +1,26 @@
 <%- include('./partials/header.ejs') -%>
 <%- include('./partials/messages.ejs') -%>
 <%- include('./partials/searchBar.ejs') -%>
-<div class="container-fluid">
-  <h1>Hello World</h1>
+<div class="container-fluid m-3">
+  <div class="row">
+    <% products.forEach(product=> { %>
+      <div class="col-lg-3 col-md-6 col-sm-12 align-items-center justify-content-center">
+        <div class="card mb-2" style="width: 250px;">
+          <img src="<%= product.productImageLink %>" class="card-img-top" alt="<%= `${product.name} image` %>">
+          <div class="card-body">
+            <strong><%= product.name %></strong>
+            <p>₹<%= product.price %></p>
+            <div class="d-flex align-items-center justify-content-between">
+              <a href="/products/view/<%= product.id %>" class="btn btn-success">View</a>
+              <% if (locals.auth) { %>
+                <a href="/products/add-to-cart/<%= product.id %>" class="btn btn-outline-success">Add to Cart</a>
+              <% } else { %>
+                <button class="btn btn-outline-success">Add to Cart</button>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+  </div>
 </div>

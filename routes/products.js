@@ -24,7 +24,7 @@ router.post('/add', restrictUnAuth, adminOnly, async (req, res) => {
 	try {
 		saveProductImage(product, imageLink);
 		const newProduct = await product.save();
-		res.redirect(`/products/${newProduct.id}`);
+		res.redirect(`/products/view/${newProduct.id}`);
 	} catch (err) {
 		req.flash('error', `${err.message}`);
 		res.redirect('/');
@@ -32,7 +32,7 @@ router.post('/add', restrictUnAuth, adminOnly, async (req, res) => {
 	}
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/view/:id', async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
 		const params = {
