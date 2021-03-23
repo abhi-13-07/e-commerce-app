@@ -11,8 +11,4 @@ router.get('/', async (req, res) => {
 	renderPage(req, res, 'index', params);
 });
 
-router.get('/cart', (req, res) => {
-	res.send('<h1>Your Cart</h1>');
-});
-
 module.exports = router;

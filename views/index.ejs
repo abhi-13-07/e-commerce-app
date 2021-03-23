@@ -13,7 +13,9 @@
             <div class="d-flex align-items-center justify-content-between">
               <a href="/products/view/<%= product.id %>" class="btn btn-success">View</a>
               <% if (locals.auth) { %>
-                <a href="/products/add-to-cart/<%= product.id %>" class="btn btn-outline-success">Add to Cart</a>
+                <form action="cart/add/<%= product.id %>" method="POST">
+                  <input type="submit" value="Add To Cart" class="btn btn-outline-success">
+                </form>
               <% } else { %>
                 <button class="btn btn-outline-success">Add to Cart</button>
               <% } %>

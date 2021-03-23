@@ -16,4 +16,22 @@ module.exports = {
 			product.productImageType = image.type;
 		}
 	},
+
+	// check for existing item
+	isExisting(newItemId, items) {
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].id === newItemId) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	getTotal(items) {
+		let price = 0;
+		items.forEach((item) => {
+			price += item.price * item.quantity;
+		});
+		return price;
+	},
 };
