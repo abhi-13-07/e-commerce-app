@@ -27,6 +27,7 @@ module.exports = {
 		return false;
 	},
 
+	// get total price for cart items
 	getTotal(items) {
 		let price = 0;
 		items.forEach((item) => {

@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const Cart = require('../schema/Cart');
-const User = require('../schema/User');
 const Product = require('../schema/Product');
 
 const Item = require('../utils/ItemConstructor');
@@ -8,9 +7,12 @@ const { renderPage, isExisting, getTotal } = require('../helper/helper');
 
 router.get('/', async (req, res) => {
 	try {
-		const cartItems = await Cart.findOne({ customerId: req.user.id });
-		console.log(cartItems);
-		res.send(`<h1>${req.user.name}'s Cart</h1>`);
+		if (req.isAuthenticated()) {
+			const cart = await Cart.findOne({ customerId: req.user.id });
+			renderPage(req, res, 'cart/cart', { cart: cart });
+		} else {
+			renderPage(req, res, 'cart/cart', {});
+		}
 	} catch (err) {
 		console.log(err);
 	}
@@ -28,6 +30,7 @@ router.post('/add/:id', async (req, res) => {
 			id: product.id,
 			name: product.name,
 			price: product.price,
+			image: product.productImageLink,
 		});
 		const cart = await Cart.findOne({ customerId });
 		if (!cart) {
