@@ -29,8 +29,8 @@ This Application is currently under development and not full functional applicat
 >
 > To set flash message when redirected. This uses session.
 
-> **bcrypt**
->
-> This package is used for hashing the password
-
 ## Features to be added soon
+
+- Search Functionality
+- payment gateway(stripe)
+- hover on image to zoom
