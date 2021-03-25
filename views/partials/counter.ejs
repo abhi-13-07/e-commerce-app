@@ -1,0 +1,25 @@
+<form method="POST" action="/cart/update/<%= itemId %>?_method=PUT" class="d-flex align-items-center">
+	<button class="counter-btn decrease">-</button>
+	<input type="text" class="value-container" name="quantity" value="<%= value %>" readonly>
+	<button class="counter-btn increase">+</button>
+</form>
+
+<script>
+	const decreaseBtn = document.getElementsByClassName('decrease')[0];
+	const increaseBtn = document.getElementsByClassName('increase')[0];
+	const valueContainer = document.getElementsByClassName('value-container')[0];
+	const value = parseInt(document.getElementsByClassName('value-container')[0].value);
+	const formElement = document.querySelector('form');
+
+	increaseBtn.addEventListener('click', () => {
+		if (value === 10) return;
+		valueContainer.value = value + 1;
+		formElement.submit();
+	});
+
+	decreaseBtn.addEventListener('click', () => {
+		if (value === 1) return;
+		valueContainer.value = value - 1;
+		formElement.submit();
+	})
+</script>

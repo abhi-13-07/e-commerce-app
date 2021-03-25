@@ -9,6 +9,7 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo').default;
+const methodOverride = require('method-override');
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -26,6 +27,7 @@ app.set('layout', 'layouts/layout');
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use(expressLayout);
 app.use(express.static('public'));
+app.use(methodOverride('_method'));
 app.use(
 	session({
 		secret: process.env.SESSION_SECRECT,
@@ -47,7 +49,7 @@ app.use(flash());
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			useCreateIndex: true,
-			useFindAndModify: true,
+			useFindAndModify: false,
 		});
 		console.log(`Connected To Database(${connection.host}) `);
 	} catch (err) {

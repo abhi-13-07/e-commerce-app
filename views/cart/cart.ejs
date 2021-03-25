@@ -6,23 +6,37 @@
 	<div class="container-fluid">
 		<div class="col-container">
 			<div class="col col-lg" id="cart-items-container">
-				<% cart.cartItems.forEach(cartItem => { %>
-					<div class="item">
-						<div class="item-img">
-							<img class="img" src="<%= cartItem.image %>" alt="">
-						</div>
-						<div class="details">
-							<div class="box">
-								<h4><%= cartItem.name.slice(0, 25) + "..." %></h4>
-								<p class="price"><strong>₹<%= cartItem.price %></strong></p>
+				<% if (cart?.cartItems?.length > 0) { %>
+					<% cart.cartItems.forEach(cartItem=> { %>
+						<div class="item">
+							<div class="item-img">
+								<img class="img" src="<%= cartItem.image %>" alt="">
 							</div>
-							<div class="box">
-								<input type="number" min="1" max="10" value="<%= cartItem.quantity %>" class="number">
-								<button class="btn btn-sm btn-danger remove-btn">Remove</button>
+							<div class="details">
+								<div class="box">
+									<h4>
+										<%= cartItem.name.slice(0, 25) + "..." %>
+									</h4>
+									<p class="price"><strong>₹<%= cartItem.price %></strong></p>
+								</div>
+								<div class="box">
+									<form action="/cart/update/<%= cartItem.id %>?_method=PUT" method="post">
+										<input type="number" name="quantity" class="quantity-change" min="1" max="10"
+											value="<%= cartItem.quantity %>">
+									</form>
+									<form action="/cart/delete/<%= cartItem.id %>?_method=DELETE" method="POST">
+										<button class="btn btn-sm btn-danger remove-btn" type="submit">Remove</button>
+									</form>
+								</div>
 							</div>
 						</div>
+						<% }) %>
+				<% } else { %>
+					<h1 class="text-secondary text-center">Your Cart is Empty!</h1>
+					<div class="d-grid align-items-center justify-content-center">
+						<a href="/" class="btn btn-success btn-block">Shop Now</a>
 					</div>
-				<% }) %>
+				<% } %>
 			</div>
 			<div class="col col-md">
 				<div class="checkout-price-container">
@@ -32,7 +46,7 @@
 					<div class="border-bottom-1px-gray">
 						<div class="fields">
 							<p>Total Price:</p>
-							<p id="total-price-value">₹<%= cart.totalPrice %></p>
+							<p id="total-price-value">₹<%= cart?.totalPrice ?? 0 %></p>
 						</div>
 						<div class="fields">
 							<p>Discount:</p>
@@ -41,13 +55,27 @@
 					</div>
 					<div class="fields border-bottom-1px-gray">
 						<b>Grand Total:</b>
-						<b id="grand-total-value">₹<%= cart.totalPrice %></b>
+						<b id="grand-total-value">₹<%= cart?.totalPrice ?? 0 %></b>
 					</div>
 					<div class="d-grid mt-3 mb-3">
-						<button class="btn btn-success">Checkout</button>
+						<% if (cart?.cartItems?.length > 0) { %>
+							<button class="btn btn-success">Checkout</button>
+						<% } else { %>
+							<button class="btn btn-secondary" disabled>Checkout</button>
+						<% } %>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	const quantityChangeInputElements = document.getElementsByClassName('quantity-change');
+	for (let i = 0; i < quantityChangeInputElements.length; i++) {
+		let quantityChangeInput = quantityChangeInputElements[i];
+		quantityChangeInput.addEventListener('change', (e) => {
+			e.target.parentElement.submit();
+		})
+	}
+</script>

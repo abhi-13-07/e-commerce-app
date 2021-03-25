@@ -7,7 +7,15 @@ const cartSchema = new mongoose.Schema({
 		ref: 'User',
 	},
 	cartItems: {
-		type: [Object],
+		type: [
+			{
+				itemId: String,
+				name: String,
+				price: Number,
+				image: String,
+				quantity: Number,
+			},
+		],
 	},
 	totalPrice: {
 		type: Number,
@@ -21,28 +29,15 @@ const cartSchema = new mongoose.Schema({
 	},
 });
 
-// cartSchema.pre('save', function (next) {
-// 	let price = 0;
-// 	this.totalItems = this.cartItems.length;
-// 	this.cartItems.forEach((item) => {
-// 		price += item.price;
-// 	});
-// 	this.totalPrice = price;
-// 	this.lastUpdate = Date.now();
-// 	next();
-// });
-
-// cartSchema.pre('updateOne', function (next) {
-// 	console.log(this.query);
-// 	const items = this._update.cartItems;
-// 	let price = 0;
-// 	this.totalItems = items.length;
-// 	items.forEach((item) => {
-// 		price += item.price;
-// 	});
-// 	this.totalPrice += price;
-// 	this.lastUpdate = Date.now();
-// 	next();
-// });
+cartSchema.pre('save', function (next) {
+	let price = 0;
+	this.totalItems = this.cartItems.length;
+	this.cartItems.forEach((item) => {
+		price += item.price * item.quantity;
+	});
+	this.totalPrice = price;
+	this.lastUpdate = Date.now();
+	next();
+});
 
 module.exports = mongoose.model('Cart', cartSchema);

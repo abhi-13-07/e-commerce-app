@@ -26,16 +26,16 @@ router.post('/add/:id', async (req, res) => {
 	});
 	try {
 		const product = await Product.findById(productId);
-		const item = new Item({
-			id: product.id,
+		const item = {
+			itemId: product.id,
 			name: product.name,
 			price: product.price,
 			image: product.productImageLink,
-		});
+			quantity: 1, // default quantity when item is add to cart
+		};
 		const cart = await Cart.findOne({ customerId });
 		if (!cart) {
 			newCart.cartItems = [item];
-			newCart.totalPrice = getTotal(newCart.cartItems);
 			newCart.totalItems = newCart.cartItems.length;
 
 			await newCart.save();
@@ -49,13 +49,43 @@ router.post('/add/:id', async (req, res) => {
 		}
 
 		cart.cartItems = [...cart.cartItems, item];
-		cart.totalPrice = getTotal(cart.cartItems);
-		cart.totalItems = cart.cartItems.length;
 
 		await cart.save();
 
 		req.flash('success', `Successfully added ${product.name} to cart`);
 		res.redirect('/');
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+router.put('/update/:id', async (req, res) => {
+	const itemId = req.params.id;
+	const customerId = req.user.id;
+	try {
+		const cart = await Cart.findOne({ customerId });
+		cart.cartItems = cart.cartItems.map((item) => {
+			if (item.id === itemId) {
+				item.quantity = parseInt(req.body.quantity);
+				return item;
+			}
+			return item;
+		});
+		await cart.save();
+		res.redirect('/cart');
+	} catch (err) {
+		console.log(err);
+	}
+});
+
+router.delete('/delete/:id', async (req, res) => {
+	const itemId = req.params.id;
+	const customerId = req.user.id;
+	try {
+		const cart = await Cart.findOne({ customerId });
+		cart.cartItems = cart.cartItems.filter((item) => item.id !== itemId);
+		await cart.save();
+		res.redirect('/cart');
 	} catch (err) {
 		console.log(err);
 	}

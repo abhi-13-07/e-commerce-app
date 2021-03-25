@@ -20,19 +20,10 @@ module.exports = {
 	// check for existing item
 	isExisting(newItemId, items) {
 		for (let i = 0; i < items.length; i++) {
-			if (items[i].id === newItemId) {
+			if (items[i].itemId === newItemId) {
 				return true;
 			}
 		}
 		return false;
-	},
-
-	// get total price for cart items
-	getTotal(items) {
-		let price = 0;
-		items.forEach((item) => {
-			price += item.price * item.quantity;
-		});
-		return price;
 	},
 };
