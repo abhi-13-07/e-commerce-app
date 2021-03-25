@@ -29,6 +29,10 @@ This Application is currently under development and not full functional applicat
 >
 > To set flash message when redirected. This uses session.
 
+> **method-override**
+>
+> Since browser can only make **POST** and **GET** request, with `method-override` we can make **PUT**, **PATCH**, **DELETE** requests.
+
 ## Features to be added soon
 
 - Search Functionality
