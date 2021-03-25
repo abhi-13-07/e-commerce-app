@@ -2,7 +2,6 @@ const router = require('express').Router();
 const Cart = require('../schema/Cart');
 const Product = require('../schema/Product');
 
-const Item = require('../utils/ItemConstructor');
 const { renderPage, isExisting, getTotal } = require('../helper/helper');
 
 router.get('/', async (req, res) => {
